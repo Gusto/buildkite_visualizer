@@ -1,0 +1,54 @@
+<html>
+<body>
+<style>
+  .block {
+    background-color: ghostwhite;
+  }
+
+  .wait {
+    background-color: yellow;
+  }
+
+  .running {
+    background-color: lightskyblue;
+  }
+
+  .running.retried {
+    background-color: orange;
+  }
+
+  .running a {
+    text-decoration: none;
+  }
+</style>
+<h1>
+  <a href="<%= build['web_url'] %>">
+    Build summary for <%= "#{build['pipeline']['slug']}/#{build['number']}" %>
+  </a>
+</h1>
+<div>
+  <% steps.each_with_index do |step, index| %>
+    <%
+      step_runnable_time = DateTime.parse(step['runnable_at']).to_time
+      block_time = (step_runnable_time - build_start_time).to_i
+      step_start_time = DateTime.parse(step['started_at']).to_time
+      wait_time = (step_start_time - step_runnable_time).to_i
+      step_finished_time = DateTime.parse(step['finished_at']).to_time
+      run_time = (step_finished_time - step_start_time).to_i
+      retried = step['retried']
+    %>
+    <div class="step" style="white-space: nowrap; font-family: monospace">
+      <span> <%= index + 1 %> </span>
+      <span class="block" title="block_time: <%= block_time %>s"> <%= '.' * block_time %> </span>
+      <span class="wait" title="wait_time: <%= wait_time %>s"> <%= '!' * wait_time %> </span>
+      <span class="running <%= retried ? "retried" : "" %>">
+      <a href="<%= step['web_url'] %>" title="<%= "run_time: #{run_time}s; state: #{step['state']}; total_time: #{(step_finished_time - build_start_time).to_i}s" %>" target="_blank">
+          <%= '|' * run_time %>
+          <%= step['step_key'] %>
+      </a>
+      </span>
+    </div>
+  <% end %>
+</div>
+</body>
+</html>
