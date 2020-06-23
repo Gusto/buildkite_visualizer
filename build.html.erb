@@ -20,16 +20,26 @@
     background-color: orange;
   }
 
-  div a {
+  table a {
     text-decoration: none;
   }
+
+  .step {
+    white-space: nowrap;
+    font-family: monospace
+  }
+
+  td:hover {
+    border-bottom: black 1px solid;
+  }
+
 </style>
 <h1>
   <a href="<%= build['web_url'] %>">
     Build summary for <%= "#{build['pipeline']['slug']}/#{build['number']}" %>
   </a>
 </h1>
-<div>
+<table>
   <% steps.each_with_index do |step, index| %>
     <%
       step_runnable_time = DateTime.parse(step['runnable_at']).to_time
@@ -40,21 +50,23 @@
       run_time = (step_finished_time - step_start_time).to_i
       retried = step['retried']
     %>
-    <div class="step" style="white-space: nowrap; font-family: monospace">
-      <a href="<%= step['web_url'] %>" target="_blank">
-        <span> <%= index + 1 %> </span>
-        <span class="block" title="block_time: <%= block_time %>s"> <%= '&nbsp;' * block_time %> </span>
-        <span class="wait" title="wait_time: <%= wait_time %>s"> <%= '&nbsp;' * wait_time %> </span>
-        <span class="running <%= retried ? "retried" : "" %>"
-              title="<%= "step: #{step['step_key'] || step['command']}, run_time: #{run_time}s; state: #{step['state']}; total_time: #{(step_finished_time - build_start_time).to_i}s" %>">
+    <tr class="step">
+      <td>
+        <a href="<%= step['web_url'] %>" target="_blank">
+          <span> <%= index + 1 %> </span>
+          <span class="block" title="block_time: <%= block_time %>s"> <%= '&nbsp;' * block_time %> </span>
+          <span class="wait" title="wait_time: <%= wait_time %>s"> <%= '&nbsp;' * wait_time %> </span>
+          <span class="running <%= retried ? "retried" : "" %>"
+                title="<%= "step: #{step['step_key'] || step['command']}, run_time: #{run_time}s; state: #{step['state']}; total_time: #{(step_finished_time - build_start_time).to_i}s" %>">
           <%= '&nbsp;' * run_time %>
       </span>
-        <span>
-          <%= "#{step['step_key']} run_time:#{run_time}s total_wait: #{block_time + wait_time}s" %>
+          <span>
+          <%= "&nbsp; #{step['step_key']} run_time:#{run_time}s total_wait: #{block_time + wait_time}s" %>
       </span>
-      </a>
-    </div>
+        </a>
+      </td>
+    </tr>
   <% end %>
-</div>
+</table>
 </body>
 </html>
