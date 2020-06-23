@@ -1,6 +1,6 @@
 # buidkite_visualizer
 
-Visualize a Buildkite Build like a network tab in your favorite browser
+Visualize a Buildkite Build like a network tab in your favorite browser from [API response](https://buildkite.com/docs/apis/rest-api/builds#get-a-build) 
 
 How to do it?
 * Create a API token from [Buildkite](https://buildkite.com/user/api-access-tokens/new) with `read builds` permision.
@@ -9,7 +9,13 @@ How to do it?
 
 ```
 export BUILDKITE_TOKEN=real_token
+export BUIKDKITE_ORG=your_org
+export BUILDKITE_PIPELINE=your_pipeline
+export BUILD_ID=257470
+export BUILD_URL="https://api.buildkite.com/v2/organizations/$BUILDKITE_ORG/pipelines/$BUILDKITE_PIPELINE/builds/$BUILD_ID?include_retried_jobs=true"
 ```
-* Generate the HTML and view it
-curl -s -H "Authorization: Bearer $BUILDKITE_TOKEN" https://api.buildkite.com/v2/organizations/gusto/pipelines/zenpayroll/builds/257470?include_retried_jobs=true | ./visualize_buildkite.rb > /tmp/build.html && open /tmp/build.html
+* Generate the HTML content and view it. Single command example:
+
+```
+curl -s -H "Authorization: Bearer $BUILDKITE_TOKEN" $BUILD_URL | ./visualize_buildkite.rb > /tmp/build-$BUILD_ID.html && open /tmp/build-$BUILD_ID.html
 ```
