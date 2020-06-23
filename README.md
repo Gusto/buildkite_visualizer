@@ -3,6 +3,9 @@
 Visualize a Buildkite Build like a network tab in your favorite browser
 
 How to do it?
+Create a API token from [Buildkite](https://buildkite.com/user/api-access-tokens/new) with `read builds` permision.
+
+And set it in the terminal
 
 ```
 export BUILDKITE_TOKEN=real_token
