@@ -2,22 +2,25 @@
 <body>
 <style>
   .block {
-    background-color: ghostwhite;
+    background-color: azure;
+    color: black;
   }
 
   .wait {
     background-color: yellow;
+    color: black;
   }
 
   .running {
     background-color: lightskyblue;
+    color: black;
   }
 
   .running.retried {
     background-color: orange;
   }
 
-  .running a {
+  div a {
     text-decoration: none;
   }
 </style>
@@ -38,15 +41,18 @@
       retried = step['retried']
     %>
     <div class="step" style="white-space: nowrap; font-family: monospace">
-      <span> <%= index + 1 %> </span>
-      <span class="block" title="block_time: <%= block_time %>s"> <%= '.' * block_time %> </span>
-      <span class="wait" title="wait_time: <%= wait_time %>s"> <%= '!' * wait_time %> </span>
-      <span class="running <%= retried ? "retried" : "" %>">
-      <a href="<%= step['web_url'] %>" title="<%= "run_time: #{run_time}s; state: #{step['state']}; total_time: #{(step_finished_time - build_start_time).to_i}s" %>" target="_blank">
-          <%= '|' * run_time %>
-          <%= step['step_key'] %>
-      </a>
+      <a href="<%= step['web_url'] %>" target="_blank">
+        <span> <%= index + 1 %> </span>
+        <span class="block" title="block_time: <%= block_time %>s"> <%= '&nbsp;' * block_time %> </span>
+        <span class="wait" title="wait_time: <%= wait_time %>s"> <%= '&nbsp;' * wait_time %> </span>
+        <span class="running <%= retried ? "retried" : "" %>"
+              title="<%= "step: #{step['step_key'] || step['command']}, run_time: #{run_time}s; state: #{step['state']}; total_time: #{(step_finished_time - build_start_time).to_i}s" %>">
+          <%= '&nbsp;' * run_time %>
       </span>
+        <span>
+          <%= "#{step['step_key']} run_time:#{run_time}s total_wait: #{block_time + wait_time}s" %>
+      </span>
+      </a>
     </div>
   <% end %>
 </div>
