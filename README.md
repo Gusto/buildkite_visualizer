@@ -1,6 +1,6 @@
 # buidkite_visualizer
 
-Visualize a Buildkite Build like a network tab in your favorite browser from [API response](https://buildkite.com/docs/apis/rest-api/builds#get-a-build) 
+Visualize a Buildkite steps like a network tab in your favorite browser from [API response](https://buildkite.com/docs/apis/rest-api/builds#get-a-build) 
 
 How to do it?
 * Create a API token from [Buildkite](https://buildkite.com/user/api-access-tokens/new) with `read builds` permision.
