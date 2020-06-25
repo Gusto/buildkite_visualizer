@@ -46,6 +46,7 @@
       block_time = (step_runnable_time - build_start_time).to_i
       step_start_time = DateTime.parse(step['started_at']).to_time
       wait_time = (step_start_time - step_runnable_time).to_i
+      next if step['finished_at'].nil?
       step_finished_time = DateTime.parse(step['finished_at']).to_time
       run_time = (step_finished_time - step_start_time).to_i
       retried = step['retried']
